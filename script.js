@@ -49,8 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
         showFoundPopup();
     }
 
-    function showFoundPopup() {
-        const popup = document.createElement('div');
+  function showFoundPopup() {
+    let popup = document.getElementById('foundPopup'); // Try to get existing popup
+    if (!popup) { // If it doesn't exist, create it
+        popup = document.createElement('div');
         popup.id = 'foundPopup';
         popup.className = 'modal-content';
         popup.innerHTML = `
@@ -59,8 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <button onclick="closeFoundPopup()">Close</button>
         `;
         document.body.appendChild(popup);
-        setTimeout(() => popup.style.display = 'block', 300);
     }
+    popup.style.display = 'block'; // Make sure to display the popup
+}
 
     function closeFoundPopup() {
         const popup = document.getElementById('foundPopup');
