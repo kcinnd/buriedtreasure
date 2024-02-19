@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Beach Treasure Hunt</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hidden-treasure {
+            display: none;
+        }
+
+        .container:hover .hidden-treasure {
+            display: block;
+            animation: appear 5s forwards;
+        }
+
+        @keyframes appear {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>Beach Treasure Hunt</strong></li>
+        </ul>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Instructions</a></li>
+            <li><a href="#" role="button">About</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="hidden-treasure">
+            <h2>Congratulations!</h2>
+            <p>You've found the buried treasure!</p>
+            <figure>
+                <img src="https://images.unsplash.com/photo-1611095564985-89765398121e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dHJlYXN1cmUlMjBjaGVzdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Treasure Chest">
+                <figcaption><a href="https://unsplash.com/photos/Ki0dpxd3LGc" target="_blank">Photo by Unsplash</a></figcaption>
+            </figure>
+        </div>
+    </main>
+    <footer class="container"><small><a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a></small></footer>
+</body>
+</html>
