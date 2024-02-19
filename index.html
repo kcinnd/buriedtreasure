@@ -2,73 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beach Treasure Hunt</title>
     <style>
         body, html {
-            height: 100%;
             margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-
-        .container {
+        canvas {
+            position: absolute;
+            width: 100%;
             height: 100%;
-            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            cursor: pointer; /* Changes the cursor to a pointer to indicate interactivity */
         }
-
-        .hidden-treasure {
+        #treasure {
             display: none;
-            animation: appear 5s forwards;
-        }
-
-        @keyframes appear {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            position: absolute;
+            /* Treasure icon size */
+            width: 50px;
+            height: 50px;
+            background-image: url('treasure-icon.png'); /* Placeholder for treasure icon */
+            background-size: cover;
         }
     </style>
 </head>
 <body>
-    <nav class="container-fluid">
-        <ul>
-            <li><strong>Beach Treasure Hunt</strong></li>
-        </ul>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Instructions</a></li>
-            <li><a href="#" role="button">About</a></li>
-        </ul>
-    </nav>
-    <main class="container" id="beach">
-        <div class="hidden-treasure" id="treasure">
-            <h2>Congratulations!</h2>
-            <p>You've found the buried treasure!</p>
-            <figure>
-                <img src="https://images.unsplash.com/photo-1611095564985-89765398121e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8dHJlYXN1cmUlMjBjaGVzdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Treasure Chest">
-                <figcaption><a href="https://unsplash.com/photos/Ki0dpxd3LGc" target="_blank">Photo by Unsplash</a></figcaption>
-            </figure>
-        </div>
-    </main>
-    <footer class="container"><small><a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a></small></footer>
+    <canvas id="beach"></canvas>
+    <div id="treasure"></div>
 
     <script>
-        let movementCount = 0;
-        const threshold = 1000; // Adjust this threshold to make the treasure easier or harder to find
+        const canvas = document.getElementById('beach');
+        const ctx = canvas.getContext('2d');
+        const treasure = document.getElementById('treasure');
+        let treasureFound = false;
 
-        document.getElementById('beach').addEventListener('mousemove', function() {
-            movementCount++; // Increment movement count on mouse move
-            if (movementCount > threshold) {
-                document.getElementById('treasure').style.display = 'block'; // Show the treasure
-                // Optional: stop counting after the treasure is found
-                this.removeEventListener('mousemove', arguments.callee);
+        // Resize the canvas to fill the screen
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas, false);
+        resizeCanvas();
+
+        // Load and draw the sand background
+        const sandImage = new Image();
+        sandImage.onload = function() {
+            ctx.drawImage(sandImage, 0, 0, canvas.width, canvas.height);
+        };
+        sandImage.src = 'sand-background.jpg'; // Placeholder for sand background image
+
+        // Function to simulate digging
+        function dig(event) {
+            const x = event.clientX;
+            const y = event.clientY;
+
+            // Radius of digging effect
+            const radius = 20;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+            ctx.fill();
+
+            // Check if the treasure is found
+            if (!treasureFound && x >= treasurePosition.x && x <= treasurePosition.x + 50 && y >= treasurePosition.y && y <= treasurePosition.y + 50) {
+                revealTreasure();
             }
-        });
+        }
+
+        // Set the treasure position (could be randomized for more challenge)
+        const treasurePosition = { x: Math.random() * (canvas.width - 50), y: Math.random() * (canvas.height - 50) };
+        treasure.style.left = `${treasurePosition.x}px`;
+        treasure.style.top = `${treasurePosition.y}px`;
+
+        // Function to reveal the treasure
+        function revealTreasure() {
+            treasure.style.display = 'block';
+            treasureFound = true;
+            // Additional effects (e.g., sound, animation) could be added here
+        }
+
+        canvas.addEventListener('mousedown', dig);
+
     </script>
 </body>
 </html>
-
