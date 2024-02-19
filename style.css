@@ -1,0 +1,28 @@
+/* Ensures the body and html elements take up the full viewport, removing default margins */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevents scrolling caused by canvas or treasure size changes */
+}
+
+/* Fullscreen canvas to simulate the sandy beach */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Styles for the treasure chest icon, initially hidden */
+#treasure {
+    display: none; /* Hidden until discovered */
+    position: absolute; /* Allows precise positioning based on JavaScript calculations */
+    width: 50px; /* Set the size of the treasure chest icon */
+    height: 50px; /* Adjust size as needed */
+    background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png'); /* Treasure chest image */
+    background-size: cover; /* Ensures the image covers the div without stretching */
+    pointer-events: none; /* Ensures the treasure doesn't interfere with canvas 'digging' */
+}
