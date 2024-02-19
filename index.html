@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beach Treasure Hunt</title>
     <style>
-        /* Ensures the body and html elements take up the full viewport, removing default margins */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Prevents scrolling caused by canvas or treasure size changes */
+            overflow: hidden;
         }
 
-        /* Fullscreen canvas to simulate the sandy beach */
         canvas {
             position: absolute;
             top: 0;
@@ -23,19 +21,62 @@
             height: 100%;
         }
 
-        /* Styles for the treasure chest icon, initially hidden */
         #treasure {
-            display: none; /* Hidden until discovered */
-            position: absolute; /* Allows precise positioning based on JavaScript calculations */
-            width: 50px; /* Set the size of the treasure chest icon */
-            height: 50px; /* Adjust size as needed */
-            background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png'); /* Treasure chest image */
-            background-size: cover; /* Ensures the image covers the div without stretching */
-            pointer-events: none; /* Ensures the treasure doesn't interfere with canvas 'digging' */
+            display: none;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png');
+            background-size: cover;
+            pointer-events: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div id="introModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Welcome to the Beach Treasure Hunt!</h2>
+            <p>Click around the sandy beach to dig and find the hidden treasure. Happy hunting!</p>
+        </div>
+    </div>
+
     <canvas id="beach"></canvas>
     <div id="treasure"></div>
 
@@ -46,7 +87,6 @@
             const treasure = document.getElementById('treasure');
             let treasureFound = false;
 
-            // Resize the canvas to fill the screen
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
@@ -56,7 +96,6 @@
             window.addEventListener('resize', resizeCanvas, false);
             resizeCanvas();
 
-            // Load and draw the sand background
             function drawSand() {
                 const sandImage = new Image();
                 sandImage.onload = function() {
@@ -65,41 +104,52 @@
                 sandImage.src = 'https://images.unsplash.com/photo-1611908171087-21962c50e48c?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
             }
 
-            // Function to simulate digging
             function dig(event) {
                 const x = event.clientX;
                 const y = event.clientY;
-
-                // Radius of digging effect
                 const radius = 20;
                 ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath(); // Begin a new path to fix the digging effect
+                ctx.beginPath();
                 ctx.arc(x, y, radius, 0, Math.PI * 2, true);
                 ctx.fill();
 
-                // Check if the treasure is found
                 if (!treasureFound && x >= treasurePosition.x && x <= treasurePosition.x + 50 && y >= treasurePosition.y && y <= treasurePosition.y + 50) {
                     revealTreasure();
                 }
             }
 
-            // Set the treasure position (could be randomized for more challenge)
-            const treasurePosition = { x: Math.random() * (canvas.width - 50), y: Math.random() * (canvas.height - 50) };
+            const treasurePosition = {
+                x: Math.random() * (canvas.width - 50),
+                y: Math.random() * (canvas.height - 50)
+            };
+
             treasure.style.left = `${treasurePosition.x}px`;
             treasure.style.top = `${treasurePosition.y}px`;
 
-            // Function to reveal the treasure
             function revealTreasure() {
                 treasure.style.display = 'block';
                 treasureFound = true;
-                // Additional effects (e.g., sound, animation) could be added here
             }
 
-            // Add event listener for the 'digging' action
             canvas.addEventListener('mousedown', dig);
 
-            // Initial setup
-            drawSand();
+            // Modal code
+            var modal = document.getElementById("introModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            window.onload = function() {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         });
     </script>
 </body>
