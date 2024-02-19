@@ -19,14 +19,11 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            cursor: pointer; /* Changes the cursor to a pointer to indicate interactivity */
         }
 
         .hidden-treasure {
             display: none;
-        }
-
-        .container:hover .hidden-treasure {
-            display: block;
             animation: appear 5s forwards;
         }
 
@@ -47,8 +44,8 @@
             <li><a href="#" role="button">About</a></li>
         </ul>
     </nav>
-    <main class="container">
-        <div class="hidden-treasure">
+    <main class="container" id="beach">
+        <div class="hidden-treasure" id="treasure">
             <h2>Congratulations!</h2>
             <p>You've found the buried treasure!</p>
             <figure>
@@ -58,5 +55,20 @@
         </div>
     </main>
     <footer class="container"><small><a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a></small></footer>
+
+    <script>
+        let movementCount = 0;
+        const threshold = 1000; // Adjust this threshold to make the treasure easier or harder to find
+
+        document.getElementById('beach').addEventListener('mousemove', function() {
+            movementCount++; // Increment movement count on mouse move
+            if (movementCount > threshold) {
+                document.getElementById('treasure').style.display = 'block'; // Show the treasure
+                // Optional: stop counting after the treasure is found
+                this.removeEventListener('mousemove', arguments.callee);
+            }
+        });
+    </script>
 </body>
 </html>
+
