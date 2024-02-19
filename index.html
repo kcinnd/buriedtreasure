@@ -18,10 +18,10 @@
         #treasure {
             display: none;
             position: absolute;
-            /* Treasure icon size */
+            /* Treasure chest size */
             width: 50px;
             height: 50px;
-            background-image: url('treasure-icon.png'); /* Placeholder for treasure icon */
+            background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png'); /* Treasure chest image */
             background-size: cover;
         }
     </style>
@@ -50,7 +50,7 @@
         sandImage.onload = function() {
             ctx.drawImage(sandImage, 0, 0, canvas.width, canvas.height);
         };
-        sandImage.src = 'sand-background.jpg'; // Placeholder for sand background image
+        sandImage.src = 'https://images.unsplash.com/photo-1611908171087-21962c50e48c?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; // Sand background image
 
         // Function to simulate digging
         function dig(event) {
@@ -60,6 +60,7 @@
             // Radius of digging effect
             const radius = 20;
             ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); // Start a new path to fix the digging effect
             ctx.arc(x, y, radius, 0, Math.PI * 2, true);
             ctx.fill();
 
