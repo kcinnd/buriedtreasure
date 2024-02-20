@@ -27,7 +27,7 @@ function placeCoins() {
 
 function unearthCoin(coinId) {
     const coin = document.getElementById('coin-' + coinId);
-    coin.style.opacity = '0.5'; // Example of an "unearth" effect
+    coin.style.opacity = '1'; // Make the coin fully visible to simulate unearthing
     addToInventory(coin.src);
     foundCoins.push(coinId); // Keep track of found coins
     checkWinCondition(); // Check if all coins have been found
