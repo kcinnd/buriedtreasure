@@ -45,15 +45,15 @@ function setTreasurePosition() {
     treasure.style.top = `${treasurePosition.y}px`;
 }
 
-    function revealTreasure() {
-        treasure.style.display = 'block';
-        treasureFound = true;
-        showFoundPopup();
-    }
+   function revealTreasure() {
+    console.log("revealTreasure called");
+    treasureFound = true;
+    showFoundPopup();
+}
 
- function showFoundPopup() {
-    alert("Congratulations! You've found the treasure!"); // Use alert for basic feedback
-    // Once confirmed, replace this with your popup logic
+function showFoundPopup() {
+    console.log("showFoundPopup called");
+    // Popup creation logic...
 }
 
     function closeFoundPopup() {
