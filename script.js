@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const coinSound = document.getElementById('coinSound');
     const enlargedCoinView = document.getElementById('enlargedCoinView');
     let foundCoinsCount = 0;
-    const radius = 20; // Radius of the digging circle
+    const radius = 30; // Increased radius for easier detection
 
     const backgroundImage = new Image();
     backgroundImage.src = 'https://i.imgur.com/ynSwqpn.jpg'; // Your sandy background image
@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const coins = [
+        // Ensure these positions are within your canvas size
         { x: 100, y: 200, url: 'https://example.com/coin1.png', found: false },
         { x: 300, y: 400, url: 'https://example.com/coin2.png', found: false },
-        // Add more coins with their positions and URLs
+        // Add more coins as needed
     ];
 
     canvas.addEventListener('click', (event) => {
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const coinImage = new Image();
         coinImage.src = coin.url;
         coinImage.onload = () => {
-            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalCompositeOperation = 'source-over'; // Ensure this is set before drawing
             ctx.drawImage(coinImage, coin.x - coinImage.width / 2, coin.y - coinImage.height / 2);
         };
     }
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateInventory(coin) {
+        inventory.style.display = 'block'; // Ensure inventory is visible when first coin is found
         const inventoryItem = document.createElement('div');
         inventoryItem.classList.add('coin');
         inventoryItem.style.backgroundImage = `url('${coin.url}')`;
@@ -81,4 +83,3 @@ document.addEventListener('DOMContentLoaded', () => {
         enlargedCoinView.style.display = 'none';
     });
 });
-
