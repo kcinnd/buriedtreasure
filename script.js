@@ -51,20 +51,9 @@ function setTreasurePosition() {
         showFoundPopup();
     }
 
-  function showFoundPopup() {
-    let popup = document.getElementById('foundPopup'); // Try to get existing popup
-    if (!popup) { // If it doesn't exist, create it
-        popup = document.createElement('div');
-        popup.id = 'foundPopup';
-        popup.className = 'modal-content';
-        popup.innerHTML = `
-            <h2>Congratulations!</h2>
-            <p>You've found the treasure!</p>
-            <button onclick="closeFoundPopup()">Close</button>
-        `;
-        document.body.appendChild(popup);
-    }
-    popup.style.display = 'block'; // Make sure to display the popup
+ function showFoundPopup() {
+    alert("Congratulations! You've found the treasure!"); // Use alert for basic feedback
+    // Once confirmed, replace this with your popup logic
 }
 
     function closeFoundPopup() {
