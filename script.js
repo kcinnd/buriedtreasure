@@ -1,11 +1,10 @@
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 const bgImage = new Image();
-const coins = []; // Array to store coin positions and statuses
+const coins = []; // Array to store coin positions and found status
 const inventory = document.getElementById('inventory');
 
 bgImage.onload = function() {
-    // Resize the canvas to fill the screen and draw the background image
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
@@ -14,9 +13,7 @@ bgImage.onload = function() {
 bgImage.src = 'https://static.vecteezy.com/system/resources/thumbnails/006/352/785/small/sand-on-the-beach-photo.jpg';
 
 function placeCoins() {
-    // Placeholder for coin placement logic. This should randomly position coins on the canvas.
-    // For demonstration, let's create 5 coins at random positions
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i++) { // Example: placing 5 coins at random positions
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
         coins.push({x, y, found: false});
@@ -50,21 +47,21 @@ function checkForCoin(x, y) {
         const dy = coin.y - y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < 20 && !coin.found) { // Assuming the coin radius is less than 20
-            coin.found = true; // Mark the coin as found
-            addToInventory(index); // Add the coin to the inventory
+            coin.found = true;
+            addToInventory(index);
         }
     });
+    showCongratulationsIfNeeded();
 }
 
 function addToInventory(coinIndex) {
     const coin = document.createElement('img');
-    coin.src = 'path/to/coin/image.png'; // Replace with the actual coin image path
+    coin.src = 'path/to/coin/image.png'; // Replace with actual coin image path
     coin.className = 'inventory-item';
     coin.addEventListener('click', function() {
         this.classList.toggle('enlarged');
     });
     inventory.appendChild(coin);
-    showCongratulationsIfNeeded();
 }
 
 function showCongratulationsIfNeeded() {
