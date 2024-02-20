@@ -3,154 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beach Treasure Hunt</title>
+    <title>Sandy Treasure Hunt</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
+        #game-area {
+            background-image: url('https://st2.depositphotos.com/3206031/8681/i/950/depositphotos_86818248-stock-photo-sand-textured-background.jpg');
             width: 100%;
-            height: 100%;
+            height: 600px; /* Adjust based on your preference */
+            position: relative;
             overflow: hidden;
         }
 
-        canvas {
+        .hidden-coin {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #treasure {
-            display: none;
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png');
-            background-size: cover;
-            pointer-events: none;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
+            width: 50px; /* Adjust size as needed */
             cursor: pointer;
+            /* Additional styles to make the coins appear partially buried could go here */
+        }
+
+        #inventory, #congrats-message {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .inventory-item {
+            width: 100px; /* Adjust size as needed for inventory view */
+        }
+
+        /* Style for the collapsible content */
+        .collapse {
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active, .collapse:hover {
+            background-color: #ccc;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
-    <div id="introModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Welcome to the Beach Treasure Hunt!</h2>
-            <p>Click around the sandy beach to dig and find the hidden treasure. Happy hunting!</p>
-        </div>
-    </div>
 
-    <canvas id="beach"></canvas>
-    <div id="treasure"></div>
+<div id="game-area"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const canvas = document.getElementById('beach');
-            const ctx = canvas.getContext('2d');
-            const treasure = document.getElementById('treasure');
-            let treasureFound = false;
+<button class="collapse">Inventory</button>
+<div class="content" id="inventory">
+    <!-- Inventory items will be dynamically inserted here -->
+</div>
 
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                drawSand();
-            }
+<button class="collapse">Congratulations!</button>
+<div class="content" id="congrats-message">
+    Congratulations! <a href="https://www.canva.com/design/DAF9TFUsac4/mTgfdbtKagyFyPl5jpnygA/view">Continue your journey</a>
+</div>
 
-            window.addEventListener('resize', resizeCanvas, false);
-            resizeCanvas();
+<script>
+    const coins = [
+        'https://touchcoins.moneymuseum.com/coins_media/Republic-of-Afghanistan-1-Afghani-2005/2126/obverse.png',
+        'https://p7.hiclipart.com/preview/908/763/612/the-treasury-department-government-of-thailand-chakri-dynasty-thailand-ministry-of-finance-ten-baht-coin-coin.jpg',
+        'https://banner2.cleanpng.com/20180714/quj/kisspng-coin-crown-danish-krone-currency-bureau-de-change-drawing-coin-5b4a65e4907dd1.8534690915316024045919.jpg',
+        'https://p7.hiclipart.com/preview/551/466/481/coin-venezuelan-bolivar-gold-medal-coin.jpg',
+        'https://banner2.cleanpng.com/20180330/dje/kisspng-egyptian-pound-bi-metallic-coin-one-pound-pharaoh-5abdbc24838aa7.1637577015223839085388.jpg',
+        'https://www.florinus.lv/resized/cbf54fd5c313ada8c568a6f737187fec-300x300-transparent.png',
+        'https://banner2.cleanpng.com/20180721/qk/kisspng-coin-ugandan-shilling-banknote-currency-australian-fiftycent-coin-5b533c7d248ed5.5018525215321816291498.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/3/3f/Coins_of_Romania_1_Ban_2005_transparent.png',
+        'https://w7.pngwing.com/pngs/198/403/png-transparent-ecuadorian-centavo-coins-ecuadorian-centavo-coins-currency-penny-lakshmi-gold-coin-gold-metal-united-states-dollar.png'
+    ];
+    const foundCoins = [];
 
-            function drawSand() {
-                const sandImage = new Image();
-                sandImage.onload = function() {
-                    ctx.drawImage(sandImage, 0, 0, canvas.width, canvas.height);
-                };
-                sandImage.src = 'https://images.unsplash.com/photo-1611908171087-21962c50e48c?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-            }
+    function placeCoins() {
+        coins.forEach((coinSrc, index) => {
+            const coin = document.createElement('img');
+            coin.src = coinSrc;
+            coin.id = 'coin-' + index;
+            coin.className = 'hidden-coin';
+            // Random positioning logic goes here
+            coin.onclick = function() { unearthCoin(index); };
+            document.getElementById('game-area').appendChild(coin);
+        });
+    }
 
-            function dig(event) {
-                const x = event.clientX;
-                const y = event.clientY;
-                const radius = 20;
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-                ctx.fill();
+    function unearthCoin(coinId) {
+        const coin = document.getElementById('coin-' + coinId);
+        // Unearth logic here
+        addToInventory(coin.src);
+    }
 
-                if (!treasureFound && x >= treasurePosition.x && x <= treasurePosition.x + 50 && y >= treasurePosition.y && y <= treasurePosition.y + 50) {
-                    revealTreasure();
-                }
-            }
+    function addToInventory(coinSrc) {
+        const inventoryItem = document.createElement('img');
+        inventoryItem.src = coinSrc;
+        inventoryItem.className = 'inventory-item';
+        document.getElementById('inventory').appendChild(inventoryItem);
+        // Optional: remove or hide the coin in the game area
+    }
 
-            const treasurePosition = {
-                x: Math.random() * (canvas.width - 50),
-                y: Math.random() * (canvas.height - 50)
-            };
+    placeCoins();
 
-            treasure.style.left = `${treasurePosition.x}px`;
-            treasure.style.top = `${treasurePosition.y}px`;
+    // Collapsible sections
+    var coll = document.getElementsByClassName("collapse");
+    var i;
 
-            function revealTreasure() {
-                treasure.style.display = 'block';
-                treasureFound = true;
-            }
-
-            canvas.addEventListener('mousedown', dig);
-
-            // Modal code
-            var modal = document.getElementById("introModal");
-            var span = document.getElementsByClassName("close")[0];
-
-            window.onload = function() {
-                modal.style.display = "block";
-            }
-
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
             }
         });
-    </script>
+    }
+</script>
+
 </body>
 </html>
