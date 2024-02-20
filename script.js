@@ -20,28 +20,35 @@ document.addEventListener('DOMContentLoaded', function() {
         sandImage.src = 'https://images.unsplash.com/photo-1611908171087-21962c50e48c?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
     }
 
-    function dig(event) {
-        const x = event.clientX;
-        const y = event.clientY;
-        const radius = 20;
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-        ctx.fill();
+   function dig(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left; // Adjust for canvas position
+    const y = event.clientY - rect.top;
 
-        if (!treasureFound && x >= treasurePosition.x && x <= treasurePosition.x + 60 && y >= treasurePosition.y && y <= treasurePosition.y + 60) {
-            revealTreasure();
-        }
-    }
+    console.log(`Digging at canvas coordinates: (${x}, ${y})`);
+    console.log(`Treasure position: (${treasurePosition.x}, ${treasurePosition.y})`);
 
-    function setTreasurePosition() {
-        treasurePosition = {
-            x: Math.random() * (canvas.width - 60),
-            y: Math.random() * (canvas.height - 60)
-        };
-        treasure.style.left = `${treasurePosition.x}px`;
-        treasure.style.top = `${treasurePosition.y}px`;
+    const radius = 20;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+    ctx.fill();
+
+    if (!treasureFound && x >= treasurePosition.x && x <= treasurePosition.x + 60 && y >= treasurePosition.y && y <= treasurePosition.y + 60) {
+        console.log("Treasure should be revealed now.");
+        revealTreasure();
     }
+}
+
+function setTreasurePosition() {
+    treasurePosition = {
+        x: Math.random() * (canvas.width - 60),
+        y: Math.random() * (canvas.height - 60)
+    };
+    console.log(`New treasure position: (${treasurePosition.x}, ${treasurePosition.y})`);
+    treasure.style.left = `${treasurePosition.x}px`;
+    treasure.style.top = `${treasurePosition.y}px`;
+}
 
     function revealTreasure() {
         treasure.style.display = 'block';
