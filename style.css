@@ -15,7 +15,9 @@ canvas {
 }
 
 #treasure {
-    display: none;
+    /* Temporarily set to block for debugging: */
+    display: block;
+    opacity: 0.5; /* Make it semi-transparent */
     position: absolute;
     width: 60px;
     height: 60px;
