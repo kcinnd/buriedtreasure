@@ -1,11 +1,13 @@
+/* Ensures the body and html elements take up the full viewport, removing default margins */
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: hidden; /* Prevents scrolling caused by canvas or treasure size changes */
 }
 
+/* Fullscreen canvas to simulate the sandy beach */
 canvas {
     position: absolute;
     top: 0;
@@ -14,65 +16,31 @@ canvas {
     height: 100%;
 }
 
+/* Styles for the treasure chest icon, made larger and semi-transparent for testing */
 #treasure {
-    /* Temporarily set to block for debugging: */
-    display: block;
-    opacity: 0.5; /* Make it semi-transparent */
+    display: block; /* Made always visible for testing */
+    opacity: 0.5; /* Semi-transparent so you can see where it is */
     position: absolute;
-    width: 200px;
+    width: 200px; /* Increased size for easier finding */
     height: 200px;
-    background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png');
+    background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png'); /* Use your treasure chest image */
     background-size: cover;
-    pointer-events: none;
+    pointer-events: none; /* Ensures the treasure doesn't interfere with canvas 'digging' */
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
+/* Basic styling for a popup message, if using one for the treasure found alert */
 #foundPopup {
-    display: none;
+    display: none; /* Initially hidden, will be shown when treasure is found */
     position: fixed;
-    z-index: 3;
+    z-index: 1000; /* Ensure it appears above all other elements */
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fefefe;
+    background-color: #fff;
     padding: 20px;
+    border-radius: 10px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 300px; /* Adjust based on your content */
 }
