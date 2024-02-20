@@ -4,40 +4,56 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    font-family: Arial, sans-serif;
+    overflow: hidden; /* Prevent scrolling */
 }
 
-/* Canvas Styles */
+/* Full-Screen Canvas */
 #gameCanvas {
-    display: block; /* Prevents default margin/padding */
-    background-color: #f0e4d7; /* Fallback color similar to the sandy background */
-    cursor: pointer; /* Indicates interactive content */
-    margin: auto; /* Center the canvas if it's smaller than the window */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0e4d7; /* Fallback in case the image doesn't load */
 }
 
-/* Inventory Section */
+/* Inventory Toggle Button */
+#inventoryToggle {
+    position: fixed;
+    left: 0;
+    top: 10px;
+    z-index: 100; /* Ensure it's above other elements */
+    background: #f9f9f9;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* Vertical Collapsible Inventory */
 #inventory {
     position: fixed;
-    bottom: 0;
     left: 0;
-    background: rgba(255,255,255,0.9);
-    width: 100%;
-    padding: 10px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
-    overflow-x: auto; /* Horizontal scrolling for coins */
-    white-space: nowrap; /* Keep coins in a single line */
-    display: none; /* Initially hidden until a coin is found */
+    top: 0;
+    width: 100px; /* Width of the inventory */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    overflow-y: auto;
+    transform: translateX(-100%); /* Start off-screen */
+    transition: transform 0.3s ease;
+    z-index: 99; /* Just below the toggle button */
 }
 
-/* Individual Coins in Inventory */
+#inventory.expanded {
+    transform: translateX(0); /* Slide in when expanded */
+}
+
+/* Inventory Items */
 #inventory .coin {
-    display: inline-block;
-    width: 50px; /* Size of coins in inventory */
+    width: 50px; /* Small size for inventory items */
     height: 50px;
     background-size: contain;
     background-repeat: no-repeat;
-    margin: 0 5px;
-    cursor: pointer; /* Indicates that coins can be clicked */
+    margin: 5px;
 }
 
 /* Congratulations Message */
@@ -51,17 +67,21 @@ body, html {
     border-radius: 10px;
     text-align: center;
     display: none; /* Hidden until all coins are found */
+    z-index: 101; /* Ensure it's above all other elements */
 }
 
 /* Enlarged Coin View */
 #enlargedCoinView {
-    /* Existing styles */
-    width: 200px; /* Increased size for better visibility */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px; /* Adjust based on your preference */
     height: 200px;
-    background-size: contain; /* Ensure the coin image fits within the container */
+    background-size: contain;
     background-repeat: no-repeat;
     display: none; /* Hidden until a coin in the inventory is clicked */
-    z-index: 10; /* Ensure it's above other elements */
-    border: 2px solid #555; /* Highlight the view */
-    border-radius: 10px; /* Rounded corners */
+    z-index: 102; /* Ensure it's on top */
+    border: 2px solid #555;
+    border-radius: 10px;
 }
