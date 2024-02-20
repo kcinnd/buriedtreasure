@@ -1,87 +1,45 @@
 document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('beach');
     const ctx = canvas.getContext('2d');
-    const treasure = document.getElementById('treasure');
     let treasureFound = false;
-    let treasurePosition = { x: 0, y: 0 };
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        drawSand();
-        setTreasurePosition();
-    }
+    // Set canvas size to fill the viewport
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
+    // Function to draw the sand background
     function drawSand() {
-        const sandImage = new Image();
-        sandImage.onload = function() {
-            ctx.drawImage(sandImage, 0, 0, canvas.width, canvas.height);
-        };
-        sandImage.src = 'https://images.unsplash.com/photo-1611908171087-21962c50e48c?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+        ctx.fillStyle = 'sandybrown'; // Using a solid color for simplicity
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
- function dig(event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    // Simplified treasure detection function
+    function simplifiedTreasureDetection(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left; // Adjust for canvas position
+        const y = event.clientY - rect.top;
 
-    const dx = x - (treasurePosition.x + 30); // Assuming the treasure is 60x60px
-    const dy = y - (treasurePosition.y + 30);
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (!treasureFound && distance < 40) { // Adjust the radius as needed
-        alert("Treasure found!"); // Immediate feedback
-        revealTreasure();
-    }
-}
-
-function setTreasurePosition() {
-    treasurePosition = {
-        x: Math.random() * (canvas.width - 60),
-        y: Math.random() * (canvas.height - 60)
-    };
-    console.log(`New treasure position: (${treasurePosition.x}, ${treasurePosition.y})`);
-    treasure.style.left = `${treasurePosition.x}px`;
-    treasure.style.top = `${treasurePosition.y}px`;
-}
-
-   function revealTreasure() {
-    console.log("revealTreasure called");
-    treasureFound = true;
-    showFoundPopup();
-}
-
-function showFoundPopup() {
-    console.log("showFoundPopup called");
-    // Popup creation logic...
-}
-
-    function closeFoundPopup() {
-        const popup = document.getElementById('foundPopup');
-        if (popup) {
-            popup.style.display = 'none';
+        // Check if the click is within a predefined area (e.g., upper-left quadrant)
+        if (x < canvas.width / 2 && y < canvas.height / 2) {
+            if (!treasureFound) {
+                alert("Treasure found in simplified test!"); // Immediate feedback
+                treasureFound = true; // To prevent multiple alerts
+                // Optionally, call a function here to handle the treasure being found, like showing a detailed popup
+            }
         }
     }
 
-    canvas.addEventListener('mousedown', dig);
-    window.addEventListener('resize', resizeCanvas);
+    // Event listener for canvas clicks, invoking the treasure detection function
+    canvas.addEventListener('click', simplifiedTreasureDetection);
 
-    const modal = document.getElementById("introModal");
-    const span = document.getElementsByClassName("close")[0];
+    // Initial draw of the sand background
+    drawSand();
 
-    window.onload = function() {
-        modal.style.display = "block";
+    // Optionally, implement a function to show a detailed popup when the treasure is found
+    // This function can be called inside simplifiedTreasureDetection when the treasure is found
+    function showTreasureFoundPopup() {
+        // Create and style the popup, then append it to the document body
+        // For simplicity, you can start with an alert() to confirm the function is called
+        alert("Congratulations! You've found the treasure!");
     }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    resizeCanvas();
 });
