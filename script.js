@@ -2,17 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const inventory = document.getElementById('inventory');
+    const inventoryToggle = document.getElementById('inventoryToggle');
     const congratulationsMessage = document.getElementById('congratulationsMessage');
     const coinSound = document.getElementById('coinSound');
     const enlargedCoinView = document.getElementById('enlargedCoinView');
     let foundCoinsCount = 0;
-    const radius = 30; // Detection radius for clicks
+
+    // Resize canvas to full screen
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    }
+    window.addEventListener('resize', resizeCanvas);
 
     const backgroundImage = new Image();
     backgroundImage.src = 'https://i.imgur.com/ynSwqpn.jpg'; // Sandy background image
     backgroundImage.onload = () => {
-        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-        placeCoinsRandomly(); // Place coins after the background has loaded
+        resizeCanvas(); // Draw background and set canvas size on initial load
     };
 
     const coinImages = [
@@ -29,83 +36,68 @@ document.addEventListener('DOMContentLoaded', () => {
     let coins = []; // Array to store coins with random positions
 
     function placeCoinsRandomly() {
-        coinImages.forEach((url, index) => {
+        coinImages.forEach(url => {
             const coin = {
-                x: Math.random() * (canvas.width - 40) + 20, // Random x, 20px padding to avoid edges
-                y: Math.random() * (canvas.height - 40) + 20, // Random y, 20px padding to avoid edges
-                url: url, // Coin image URL
+                x: Math.random() * (canvas.width - 40) + 20,
+                y: Math.random() * (canvas.height - 40) + 20,
+                url: url,
                 found: false
             };
             coins.push(coin);
         });
     }
 
+    placeCoinsRandomly(); // Place coins when the game starts
+
     canvas.addEventListener('click', (event) => {
         const rect = canvas.getBoundingClientRect();
         const clickX = event.clientX - rect.left;
         const clickY = event.clientY - rect.top;
 
-        // Digging effect
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(clickX, clickY, radius, 0, Math.PI * 2, true);
-        ctx.fill();
-
         coins.forEach((coin, index) => {
-            if (!coin.found && isCoinAtClickPosition(coin, clickX, clickY)) {
+            if (!coin.found && Math.hypot(coin.x - clickX, coin.y - clickY) < 20) {
                 coin.found = true;
                 foundCoinsCount++;
-                playCoinFoundSound();
+                coinSound.play(); // Play the coin found sound
                 revealCoin(coin, index);
                 updateInventory(coin);
                 if (foundCoinsCount === coins.length) {
-                    showCongratulationsMessage();
+                    congratulationsMessage.classList.remove('collapse');
                 }
             }
         });
     });
 
-    function isCoinAtClickPosition(coin, clickX, clickY) {
-        return Math.hypot(coin.x - clickX, coin.y - clickY) < radius;
-    }
-
-   function revealCoin(coin, index) {
-    // Assuming each coin image is scaled down to 10x10 pixels for a challenge
-    const scaledWidth = 10;
-    const scaledHeight = 10;
-    const coinImage = new Image();
-    coinImage.src = coin.url;
-    coinImage.onload = () => {
-        ctx.globalCompositeOperation = 'source-over'; // Ensure this is set before drawing
-        // Draw the coin scaled down and centered on its position
-        ctx.drawImage(coinImage, coin.x - scaledWidth / 2, coin.y - scaledHeight / 2, scaledWidth, scaledHeight);
-        
-        // To make the coin "disappear" after being found, you can clear its area on the canvas
-        // or simply not redraw it in future canvas refreshes, depending on your game's design.
-    };
-}
-
-    function playCoinFoundSound() {
-        coinSound.play();
+    function revealCoin(coin, index) {
+        // Draw the coin smaller than its original size for challenge
+        const coinImage = new Image();
+        coinImage.src = coin.url;
+        coinImage.onload = () => {
+            ctx.globalCompositeOperation = 'source-over';
+            const scaledWidth = 20; // Small size for the found coin
+            const scaledHeight = 20;
+            ctx.drawImage(coinImage, coin.x - scaledWidth / 2, coin.y - scaledHeight / 2, scaledWidth, scaledHeight);
+        };
     }
 
     function updateInventory(coin) {
-        inventory.style.display = 'block';
+        inventory.classList.add('expanded'); // Show the inventory if it's not already visible
         const inventoryItem = document.createElement('div');
         inventoryItem.classList.add('coin');
         inventoryItem.style.backgroundImage = `url('${coin.url}')`;
         inventory.appendChild(inventoryItem);
+
         inventoryItem.addEventListener('click', () => {
             enlargedCoinView.style.backgroundImage = `url('${coin.url}')`;
-            enlargedCoinView.style.display = 'block';
+            enlargedCoinView.classList.remove('collapse');
         });
     }
 
-    function showCongratulationsMessage() {
-        congratulationsMessage.classList.remove('collapse');
-    }
+    inventoryToggle.addEventListener('click', () => {
+        inventory.classList.toggle('expanded');
+    });
 
     enlargedCoinView.addEventListener('click', () => {
-        enlargedCoinView.style.display = 'none';
+        enlargedCoinView.classList.add('collapse');
     });
 });
