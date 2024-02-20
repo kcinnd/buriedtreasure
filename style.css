@@ -1,46 +1,60 @@
-/* Ensures the body and html elements take up the full viewport, removing default margins */
-body, html {
-    margin: 0;
-    padding: 0;
+/* Style for the game area */
+#game-area {
+    background-image: url('https://st2.depositphotos.com/3206031/8681/i/950/depositphotos_86818248-stock-photo-sand-textured-background.jpg');
     width: 100%;
-    height: 100%;
-    overflow: hidden; /* Prevents scrolling caused by canvas or treasure size changes */
+    height: 600px; /* Adjust based on your preference */
+    position: relative;
+    overflow: hidden;
 }
 
-/* Fullscreen canvas to simulate the sandy beach */
-canvas {
+/* Style for the hidden coins */
+.hidden-coin {
     position: absolute;
-    top: 0;
-    left: 0;
+    width: 50px; /* Adjust size as needed */
+    cursor: pointer;
+    transition: opacity 0.3s ease; /* Smooth transition for the unearth effect */
+}
+
+/* Style for the inventory items */
+.inventory-item {
+    width: 50px; /* Adjust size as needed for inventory view */
+    margin: 5px;
+}
+
+/* Style for the collapsible buttons */
+.collapse {
+    background-color: #f9f9f9;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
     width: 100%;
-    height: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    border-top: 1px solid #ddd; /* Add a subtle border */
 }
 
-/* Styles for the treasure chest icon, made larger and semi-transparent for testing */
-#treasure {
-    display: block; /* Made always visible for testing */
-    opacity: 0.5; /* Semi-transparent so you can see where it is */
-    position: absolute;
-    width: 200px; /* Increased size for easier finding */
-    height: 200px;
-    background-image: url('https://png.pngtree.com/png-vector/20230902/ourmid/pngtree-treasure-chest-illustration-png-image_9243267.png'); /* Use your treasure chest image */
-    background-size: cover;
-    pointer-events: none; /* Ensures the treasure doesn't interfere with canvas 'digging' */
+/* Style for the active state of the collapsible buttons */
+.active, .collapse:hover {
+    background-color: #ccc;
 }
 
-/* Basic styling for a popup message, if using one for the treasure found alert */
-#foundPopup {
-    display: none; /* Initially hidden, will be shown when treasure is found */
-    position: fixed;
-    z-index: 1000; /* Ensure it appears above all other elements */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
+/* Style for the collapsible content */
+.content {
+    padding: 0 18px;
+    display: none; /* Hidden by default */
+    overflow: hidden;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd; /* Add a subtle border */
+}
+
+/* Additional styles for the congratulations message */
+#congrats-message {
     padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #888;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+    margin-top: 20px;
     text-align: center;
-    max-width: 300px; /* Adjust based on your content */
 }
