@@ -20,21 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
         sandImage.src = 'https://images.unsplash.com/photo-1611908171087-21962c50e48c?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
     }
 
-   function dig(event) {
+  function dig(event) {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left; // Adjust for canvas position
     const y = event.clientY - rect.top;
 
-    console.log(`Digging at canvas coordinates: (${x}, ${y})`);
-    console.log(`Treasure position: (${treasurePosition.x}, ${treasurePosition.y})`);
+    // Calculate the distance between the click point and the treasure's center
+    const dx = x - (treasurePosition.x + 30); // 30 is half the width/height to get the center
+    const dy = y - (treasurePosition.y + 30);
+    const distance = Math.sqrt(dx * dx + dy * dy);
 
-    const radius = 20;
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-    ctx.fill();
-
-    if (!treasureFound && x >= treasurePosition.x && x <= treasurePosition.x + 60 && y >= treasurePosition.y && y <= treasurePosition.y + 60) {
+    // Check if the distance is within a certain threshold, indicating a 'hit'
+    if (!treasureFound && distance < 40) { // 40 can be adjusted based on desired sensitivity
         console.log("Treasure should be revealed now.");
         revealTreasure();
     }
