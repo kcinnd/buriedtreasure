@@ -1,3 +1,15 @@
+document.getElementById('game-area').addEventListener('click', function(event) {
+    const hole = document.createElement('div');
+    hole.className = 'hole';
+
+    // Adjust the position to center the hole under the cursor
+    const holeSize = 30; // Match the diameter in CSS
+    hole.style.left = `${event.offsetX - holeSize / 2}px`;
+    hole.style.top = `${event.offsetY - holeSize / 2}px`;
+
+    this.appendChild(hole);
+});
+
 const coins = [
     'https://touchcoins.moneymuseum.com/coins_media/Republic-of-Afghanistan-1-Afghani-2005/2126/obverse.png',
     'https://p7.hiclipart.com/preview/908/763/612/the-treasury-department-government-of-thailand-chakri-dynasty-thailand-ministry-of-finance-ten-baht-coin-coin.jpg',
