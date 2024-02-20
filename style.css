@@ -1,19 +1,30 @@
-/* Style for the game area with updated sand background */
+/* Style for the game area with the updated sand background */
 #game-area {
     background-image: url('https://static.vecteezy.com/system/resources/thumbnails/006/352/785/small/sand-on-the-beach-photo.jpg');
     width: 100%;
     height: 600px; /* Adjust based on your preference */
     position: relative;
     overflow: hidden;
+    cursor: pointer; /* Change cursor to indicate clickable area */
 }
 
 /* Style for the hidden coins */
 .hidden-coin {
     position: absolute;
     width: 50px; /* Adjust size as needed */
-    cursor: pointer;
     opacity: 0; /* Make coins initially invisible */
     transition: opacity 0.3s ease; /* Smooth transition for the unearth effect */
+}
+
+/* Style for the "hole" effect when the sand is clicked */
+.hole {
+    position: absolute;
+    border-radius: 50%; /* Makes the div circular */
+    background: rgba(0, 0, 0, 0); /* Transparent background */
+    border: 2px solid #000; /* Circle border to simulate the hole edge */
+    width: 30px; /* Diameter of the hole */
+    height: 30px; /* Diameter of the hole */
+    pointer-events: none; /* Prevents the hole from capturing click events */
 }
 
 /* Style for the inventory items */
@@ -50,7 +61,7 @@
     border-bottom: 1px solid #ddd; /* Add a subtle border */
 }
 
-/* Additional styles for the congratulations message */
+/* Additional styles for the congratulations message, initially hidden */
 #congrats-message {
     display: none; /* Initially hidden */
     padding: 20px;
@@ -60,14 +71,3 @@
     margin-top: 20px;
     text-align: center;
 }
-
-.hole {
-    position: absolute;
-    border-radius: 50%; /* Makes the div circular */
-    background: rgba(0, 0, 0, 0); /* Transparent background */
-    border: 2px solid #000; /* Circle border to simulate the hole edge, adjust color as needed */
-    width: 30px; /* Diameter of the hole */
-    height: 30px; /* Diameter of the hole */
-    pointer-events: none; /* Prevents the hole from capturing click events */
-}
-
