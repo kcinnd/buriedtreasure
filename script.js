@@ -69,14 +69,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.hypot(coin.x - clickX, coin.y - clickY) < radius;
     }
 
-    function revealCoin(coin, index) {
-        const coinImage = new Image();
-        coinImage.src = coin.url;
-        coinImage.onload = () => {
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.drawImage(coinImage, coin.x - coinImage.width / 2, coin.y - coinImage.height / 2);
-        };
-    }
+   function revealCoin(coin, index) {
+    // Assuming each coin image is scaled down to 10x10 pixels for a challenge
+    const scaledWidth = 10;
+    const scaledHeight = 10;
+    const coinImage = new Image();
+    coinImage.src = coin.url;
+    coinImage.onload = () => {
+        ctx.globalCompositeOperation = 'source-over'; // Ensure this is set before drawing
+        // Draw the coin scaled down and centered on its position
+        ctx.drawImage(coinImage, coin.x - scaledWidth / 2, coin.y - scaledHeight / 2, scaledWidth, scaledHeight);
+        
+        // To make the coin "disappear" after being found, you can clear its area on the canvas
+        // or simply not redraw it in future canvas refreshes, depending on your game's design.
+    };
+}
 
     function playCoinFoundSound() {
         coinSound.play();
