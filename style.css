@@ -60,3 +60,14 @@
     margin-top: 20px;
     text-align: center;
 }
+
+.hole {
+    position: absolute;
+    border-radius: 50%; /* Makes the div circular */
+    background: rgba(0, 0, 0, 0); /* Transparent background */
+    border: 2px solid #000; /* Circle border to simulate the hole edge, adjust color as needed */
+    width: 30px; /* Diameter of the hole */
+    height: 30px; /* Diameter of the hole */
+    pointer-events: none; /* Prevents the hole from capturing click events */
+}
+
