@@ -4,27 +4,15 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
     font-family: Arial, sans-serif;
 }
 
-/* Game Area */
-#gameArea {
-    background: url('https://i.imgur.com/ynSwqpn.jpg') no-repeat center center;
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    cursor: pointer;
-}
-
-/* Coin in Game Area */
-.coin {
-    width: 20px; /* Adjust size as needed */
-    height: 20px;
-    background-size: cover;
-    position: absolute;
-    display: none; /* Hidden until found */
+/* Canvas Styles */
+#gameCanvas {
+    display: block; /* Prevents default margin/padding */
+    background-color: #f0e4d7; /* Fallback color similar to the sandy background */
+    cursor: pointer; /* Indicates interactive content */
+    margin: auto; /* Center the canvas if it's smaller than the window */
 }
 
 /* Inventory Section */
@@ -36,10 +24,20 @@ body, html {
     width: 100%;
     padding: 10px;
     box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
-    overflow-y: auto; /* Enable scrolling for large number of coins */
-    max-height: 100px; /* Adjust as needed */
-    display: flex; /* Align coins horizontally */
-    gap: 10px; /* Space between coins */
+    overflow-x: auto; /* Horizontal scrolling for coins */
+    white-space: nowrap; /* Keep coins in a single line */
+    display: none; /* Initially hidden until a coin is found */
+}
+
+/* Individual Coins in Inventory */
+#inventory .coin {
+    display: inline-block;
+    width: 50px; /* Size of coins in inventory */
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 5px;
+    cursor: pointer; /* Indicates that coins can be clicked */
 }
 
 /* Congratulations Message */
@@ -55,50 +53,18 @@ body, html {
     display: none; /* Hidden until all coins are found */
 }
 
-/* Digging Effect */
-.digEffect {
-    position: absolute;
-    width: 50px; /* Adjust based on desired size */
-    height: 50px;
-    background: url('dig-effect.png'); /* Your dig effect graphic */
-    pointer-events: none; /* Prevents the effect from capturing clicks */
-    animation: fadeOut 1s forwards; /* Animation to fade out the effect */
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-    }
-}
-
-/* Sparkle Effect for Coin Discovery */
-.sparkle {
-    animation: sparkle 0.5s ease-out forwards;
-}
-
-@keyframes sparkle {
-    from {
-        opacity: 1;
-        transform: scale(0.5);
-    }
-    to {
-        opacity: 0;
-        transform: scale(1.5);
-    }
-}
-
 /* Enlarged Coin View */
 #enlargedCoinView {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100px; /* Adjust as needed */
-    height: 100px;
+    width: 200px; /* Size for enlarged view */
+    height: 200px;
     background-size: contain;
     background-repeat: no-repeat;
-    display: none; /* Hidden until a coin is clicked */
-    cursor: pointer;
-    border: 2px solid #555; /* Optional: adds a border around the enlarged view */
-    border-radius: 10px; /* Optional: rounds the corners of the enlarged view */
+    display: none; /* Hidden until a coin in the inventory is clicked */
+    cursor: pointer; /* Indicates that the enlarged view can be closed by clicking */
+    border: 2px solid #555;
+    border-radius: 10px;
 }
