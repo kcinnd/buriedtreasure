@@ -4,112 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandy Treasure Hunt</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevents scrolling */
-        }
-
-        #game-canvas {
-            width: 100vw; /* Full width of the viewport */
-            height: 100vh; /* Full height of the viewport */
-            object-fit: cover; /* Ensures the canvas covers the full area without stretching */
-            background: #f8f8f8; /* Fallback background color */
-        }
-
-        /* Style for the inventory items */
-        .inventory-item {
-            width: 50px; /* Adjust size as needed for inventory view */
-            margin: 5px;
-            cursor: pointer; /* Indicates items are clickable */
-        }
-
-        /* Style for the collapsible buttons */
-        .collapse {
-            background-color: #f9f9f9;
-            color: #444;
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 15px;
-            border-top: 1px solid #ddd; /* Add a subtle border */
-        }
-
-        /* Style for the active state of the collapsible buttons */
-        .active, .collapse:hover {
-            background-color: #ccc;
-        }
-
-        /* Style for the collapsible content */
-        .content {
-            padding: 0 18px;
-            display: none; /* Hidden by default */
-            overflow: hidden;
-            background-color: #f1f1f1;
-            border-bottom: 1px solid #ddd; /* Add a subtle border */
-        }
-
-        /* Additional styles for the congratulations message, initially hidden */
-        #congrats-message {
-            display: none; /* Initially hidden */
-            padding: 20px;
-            background-color: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<canvas id="game-canvas"></canvas> <!-- The game area is now a canvas -->
-
-<button class="collapse">Inventory</button>
-<div class="content" id="inventory">
-    <!-- Inventory items will be dynamically inserted here by JavaScript -->
-</div>
-
-<button class="collapse">Congratulations!</button>
-<div class="content" id="congrats-message" style="display: none;">
-    Congratulations! <a href="https://www.canva.com/design/DAF9TFUsac4/mTgfdbtKagyFyPl5jpnygA/view">Continue your journey</a>
-</div>
-
-<script>
-    const canvas = document.getElementById('game-canvas');
-    const ctx = canvas.getContext('2d');
-    const bgImage = new Image();
-
-    bgImage.onload = function() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-    };
-    bgImage.src = 'https://static.vecteezy.com/system/resources/thumbnails/006/352/785/small/sand-on-the-beach-photo.jpg';
-
-    canvas.addEventListener('mousedown', function(e) {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        digHole(x, y);
-    });
-
-    function digHole(x, y) {
-        const radius = 20;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(0,0,0,0)';
-        ctx.fill();
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.globalCompositeOperation = 'source-over';
-    }
-</script>
-
+    <div id="gameArea"></div>
+    <div id="inventory" class="collapse">Inventory</div>
+    <div id="congratulationsMessage" class="collapse">
+        Congratulations! <a href="https://www.canva.com/design/DAF9TFUsac4/mTgfdbtKagyFyPl5jpnygA/view?utm_content=DAF9TFUsac4&utm_campaign=designshare&utm_medium=link&utm_source=editor">Continue your journey</a>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
