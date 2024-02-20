@@ -7,23 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Canvas for the game area -->
-    <canvas id="gameCanvas" width="800" height="600"></canvas> <!-- Ensure dimensions match your design -->
-    
-    <!-- Inventory for found coins -->
-    <div id="inventory" class="collapse">Inventory</div>
-    
-    <!-- Congratulations message -->
-    <div id="congratulationsMessage" class="collapse">
+
+    <canvas id="gameCanvas"></canvas> <!-- Canvas for the game area -->
+
+    <div id="inventoryToggle">Inventory</div> <!-- Inventory toggle button -->
+
+    <div id="inventory" class="collapse"> <!-- Vertical collapsible inventory panel -->
+        <!-- Found coins will be added here by JavaScript -->
+    </div>
+
+    <div id="congratulationsMessage" class="collapse"> <!-- Congratulations message -->
         Congratulations! <a href="https://www.canva.com/design/DAF9TFUsac4/mTgfdbtKagyFyPl5jpnygA/view?utm_content=DAF9TFUsac4&utm_campaign=designshare&utm_medium=link&utm_source=editor">Continue your journey</a>
     </div>
-    
-    <!-- Audio element for the coin found sound -->
-    <audio id="coinSound" src="coin-found.mp3"></audio> <!-- Update src with your sound file -->
-    
-    <!-- Container for the enlarged coin view -->
-    <div id="enlargedCoinView" class="collapse"></div>
-    
+
+    <audio id="coinSound" src="coin-found.mp3"></audio> <!-- Audio element for the coin found sound -->
+
+    <div id="enlargedCoinView" class="collapse"></div> <!-- Container for the enlarged coin view -->
+
     <script src="script.js"></script>
 </body>
 </html>
